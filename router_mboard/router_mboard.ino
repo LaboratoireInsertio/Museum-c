@@ -5,15 +5,11 @@
 // https://github.com/andrewrapp/xbee-arduino
 #include <XBee.h>
 #include "Node.h"
-#include "Slip.h"
+#include <Slip.h>
 #include "nodeList.h"
 
 // create the XBee object
 XBee xbee = XBee();
-XBeeResponse response = XBeeResponse();
-// create reusable response objects for responses we expect to handle
-ZBRxResponse rx = ZBRxResponse();
-ModemStatusResponse msr = ModemStatusResponse();
 
 // START Slip AND LINK IT TO THE onReceive FUNCTION
 // THAT WILL BE CALLED WHEN A MESSAGE IS RECEIVED
@@ -26,10 +22,6 @@ uint8_t payload[] = {
 };
 
 uint8_t slipEcho[] = {0,0};
-
-int WHITE_LED = 5;
-
-int incomingData = 0;
 
 
 void setup() {
@@ -54,32 +46,7 @@ void loop() {
   // break down 10-bit reading into two bytes and place in payload
   // USING PIN 5 FOR TESTING, UPDATE WITH VALUES FROM LIVE
   //pin5 = analogRead(5)/4;
-  
-  xbee.readPacket();
-  
-  if (xbee.getResponse().isAvailable()) {
-    // got something
-    if (xbee.getResponse().getApiId() == ZB_RX_RESPONSE) {
-      // got a zb rx packet
 
-      // now fill our zb rx class
-      xbee.getResponse().getZBRxResponse(rx);
-
-      // get value of the first byte in the data
-      incomingData = rx.getData(0);
-      
-      //////////////////// DO WHAT WITH DATA? ////////////////////
-      analogWrite(WHITE_LED, incomingData);
-      Serial.println(incomingData);
-      
-    }
-    
-  }
-  
-  // send test
-  //sendPacket(XBeeAddress64(0x0013a200, 0x40e66dca), 0);
-  //delay(100);
-  
   // update() MUST BE CALLED EVERY LOOP
   slip.update();
 }
