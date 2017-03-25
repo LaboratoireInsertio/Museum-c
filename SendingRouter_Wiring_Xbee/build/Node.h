@@ -5,8 +5,8 @@
 #ifndef Node_h
 #define Node_h
 
-#include <Wiring.h>
-#include <XBee.h>
+#include "Wiring.h"
+#include "XBee.h"
 
 class Node
 {

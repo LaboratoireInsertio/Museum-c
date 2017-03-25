@@ -18,9 +18,8 @@
  */
 
 #include <XBee.h>
-#include "Node.h"
+#include <Node.h>
 #include <Slip.h>
-#include "nodeList.h"
 
 /*
 This example is for Series 2 XBee
@@ -35,32 +34,93 @@ XBee xbee = XBee();
 // THAT WILL BE CALLED WHEN A MESSAGE IS RECEIVED
 Slip slip = Slip(Serial, onReceive); 
 
-//Zigbee Transmit Request API packet
-ZBTxRequest txRequest;
-uint8_t payload[] = {
-  0
-};
+//FOR PERFORMANCE ---------------
 
-uint8_t slipEcho[] = {0,0};
-
-
-void setup() {
-  // starts serial communication with computer
-  Serial.begin(57600);
-
-  // starts serial communication with xBee
-  Serial1.begin(57600);
-  xbee.setSerial(Serial1);
+// create an array of Node objects with the SH + SL Address of the 
+// receiving XBees and the assigned notes
+Node nodes[] = { 
+  Node(XBeeAddress64(0x0013a200, 0x40e66c5c), 48),  // 48 - C2
+  Node(XBeeAddress64(0x0013a200, 0x40e66c2d), 49),  // 49 - C#2
+  Node(XBeeAddress64(0x0013a200, 0x40e66dcb), 50),  // 50 - D2
+  Node(XBeeAddress64(0x0013a200, 0x40e66c42), 51),  // 51 - D#2
+  Node(XBeeAddress64(0x0013a200, 0x40e66c21), 52),  // 52 - E2   
+ 
+  Node(XBeeAddress64(0x0013a200, 0x40e66c1d), 60),  // 60 - C3
+  Node(XBeeAddress64(0x0013a200, 0x40e66c3c), 61),  // 61 - C#3
+  Node(XBeeAddress64(0x0013a200, 0x40e668d4), 62),  // 62 - D3
+  Node(XBeeAddress64(0x0013a200, 0x40e66c5b), 63),  // 63 - D#3
+  Node(XBeeAddress64(0x0013a200, 0x40e66c46), 64),  // 64 - E3
   
-  // Prepare the Zigbee Transmit Request API packet
-  // Set the paylod for the data to be sent
-  txRequest.setPayload(payload, sizeof(payload));
-  // Identifies the UART data frame for the host to correlate with a
-  // subsequent ACK (acknowledgment). If set to 0, no response is sent.
-  txRequest.setFrameId(0);
-  // Disable ACK (acknowledgement)
-  txRequest.setOption(1);
-}
+  Node(XBeeAddress64(0x0013a200, 0x40e66c13), 72),  // 72 - C4
+  Node(XBeeAddress64(0x0013a200, 0x40e66dd7), 73),  // 73 - C#4
+  Node(XBeeAddress64(0x0013a200, 0x40e66c49), 74),  // 74 - D4
+  Node(XBeeAddress64(0x0013a200, 0x40e66c18), 75),  // 75 - D#4
+  Node(XBeeAddress64(0x0013a200, 0x40e66c2f), 76),  // 76 - E4
+  
+  Node(XBeeAddress64(0x0013a200, 0x40e66c28), 84),  // 84 - C5
+  Node(XBeeAddress64(0x0013a200, 0x40e66c55), 85),  // 85 - C#5
+  Node(XBeeAddress64(0x0013a200, 0x40e66c3e), 86),  // 86 - D5
+  Node(XBeeAddress64(0x0013a200, 0x40e66c12), 87),  // 87 - D#5
+  Node(XBeeAddress64(0x0013a200, 0x40e66c48), 88),  // 88 - E5
+  
+  Node(XBeeAddress64(0x0013a200, 0x40e66c50), 96),  // 96 - C6
+  Node(XBeeAddress64(0x0013a200, 0x40e66c14), 97),  // 97 - C#6
+  Node(XBeeAddress64(0x0013a200, 0x40e66c2b), 98),  // 98 - D6
+  Node(XBeeAddress64(0x0013a200, 0x40e66c5d), 99),  // 99 - D#6
+  Node(XBeeAddress64(0x0013a200, 0x40e66c32), 100)  // 100 - E6
+  };
+  
+  
+  
+ /* //FOR WORKSHOP ---------------
+
+// create an array of Node objects with the SH + SL Address of the 
+// receiving XBees and the assigned notes
+Node nodes[] = { 
+  Node(XBeeAddress64(0x0013a200, 0x40e66c5f), 48),  // 48 - C2
+  Node(XBeeAddress64(0x0013a200, 0x40e66c56), 49),  // 49 - C#2
+  Node(XBeeAddress64(0x0013a200, 0x40e66dd4), 50),  // 50 - D2
+  Node(XBeeAddress64(0x0013a200, 0x40e66dd3), 51),  // 51 - D#2
+  Node(XBeeAddress64(0x0013a200, 0x40e66dcc), 52)  ,  // 52 - E2   
+ 
+  Node(XBeeAddress64(0x0013a200, 0x40e66c1d), 60),  // 60 - C3
+  Node(XBeeAddress64(0x0013a200, 0x40e66c3c), 61),  // 61 - C#3
+  Node(XBeeAddress64(0x0013a200, 0x40e668d4), 62),  // 62 - D3
+  Node(XBeeAddress64(0x0013a200, 0x40e66c5b), 63),  // 63 - D#3
+  Node(XBeeAddress64(0x0013a200, 0x40e66c46), 64),  // 64 - E3
+ 
+  Node(XBeeAddress64(0x0013a200, 0x40e66dca), 72),  // 72 - C4
+  Node(XBeeAddress64(0x0013a200, 0x40e66da0), 73),  // 73 - C#4
+  Node(XBeeAddress64(0x0013a200, 0x40e66c35), 74),  // 74 - D4
+  Node(XBeeAddress64(0x0013a200, 0x40e66dcd), 75),  // 75 - D#4
+  Node(XBeeAddress64(0x0013a200, 0x40e66c1b), 76) /*,  // 76 - E4
+  
+  Node(XBeeAddress64(0x0013a200, 0x40e66c28), 84),  // 84 - C5
+  Node(XBeeAddress64(0x0013a200, 0x40e66c55), 85),  // 85 - C#5
+  Node(XBeeAddress64(0x0013a200, 0x40e66c3e), 86),  // 86 - D5
+  Node(XBeeAddress64(0x0013a200, 0x40e66c12), 87),  // 87 - D#5
+  Node(XBeeAddress64(0x0013a200, 0x40e66c48), 88),  // 88 - E5
+  
+  Node(XBeeAddress64(0x0013a200, 0x40e66c50), 96),  // 96 - C6
+  Node(XBeeAddress64(0x0013a200, 0x40e66c14), 97),  // 97 - C#6
+  Node(XBeeAddress64(0x0013a200, 0x40e66c2b), 98),  // 98 - D6
+  Node(XBeeAddress64(0x0013a200, 0x40e66c5d), 99),  // 99 - D#6
+  Node(XBeeAddress64(0x0013a200, 0x40e66c32), 100)  // 100 - E6
+
+  }; */
+  
+
+  // FOR TESTING
+  //int pin5 = 0;
+
+  void setup() {
+    // starts serial communication with computer
+    Serial.begin(57600);
+
+    // starts serial communication with xBee
+    Serial1.begin(57600);
+    xbee.setSerial(Serial1);
+  }
 
 void loop() {
   // break down 10-bit reading into two bytes and place in payload
@@ -84,37 +144,34 @@ void onReceive() {
     byte dataToSend = slip.get(1); //second byte
     dataToSend = map(dataToSend,1,127,0,255);
 
-       for (int i = 0; i < (sizeof(nodes) / sizeof(Node)); i++) {
-      if (nodes[i].getNote() == destinationXbee) {
-#ifdef SEND_XBEE_ONLY_ON_CHANGE
+    for (int i = 0; i < (sizeof(nodes)/sizeof(Node)); i++)
+      if (nodes[i].getNote() == destinationXbee)
         nodes[i].setVal(dataToSend);
-#else
-        sendPacket(nodes[i].getAddress(), dataToSend);
-#endif
-        break;
-      }
-    }
 
-#ifdef SEND_XBEE_ONLY_ON_CHANGE
     // sends messages to the nodes only if the values have changed
-    for (int i = 0; i < (sizeof(nodes) / sizeof(Node)); i++)
+    for (int i = 0; i < (sizeof(nodes)/sizeof(Node)); i++)
       if (nodes[i].valueHasChanged())
         sendPacket(nodes[i].getAddress(), nodes[i].getVal());
-#endif
-
-  slipEcho[0] = destinationXbee;
-  slipEcho[1] = dataToSend;
-  slip.write(slipEcho,2);
-
   }
 }
 
 
 void sendPacket(XBeeAddress64 addr64, uint8_t val) {
+  // Prepare the Zigbee Transmit Request API packet
+  ZBTxRequest txRequest;
   // Set the destination address of the message
   txRequest.setAddress64(addr64);
-  payload[0] = val;
+  // THE data to be send
+  uint8_t payload[] = {
+    val
+  };
+  txRequest.setPayload(payload, sizeof(payload));
+  // Identifies the UART data frame for the host to correlate with a 
+  // subsequent ACK (acknowledgment). If set to 0, no response is sent.
+  txRequest.setFrameId(0);
+  // Disable ACK (acknowledgement)
+  txRequest.setOption(1);
   // Send the message
   xbee.send(txRequest);
-}
+} 
 

@@ -18,9 +18,11 @@
  */
 
 #include <XBee.h>
-#include "Node.h"
+#include <Node.h>
 #include <Slip.h>
 #include "nodeList.h"
+
+// THIS IS AN EDIT TO SHOW GABI 
 
 /*
 This example is for Series 2 XBee
@@ -29,6 +31,11 @@ This example is for Series 2 XBee
  */
 
 // create the XBee object
+#include "WProgram.h"
+void setup();
+void loop();
+void onReceive();
+void sendPacket(XBeeAddress64 addr64, uint8_t val);
 XBee xbee = XBee();
 
 // START Slip AND LINK IT TO THE onReceive FUNCTION
@@ -117,4 +124,5 @@ void sendPacket(XBeeAddress64 addr64, uint8_t val) {
   // Send the message
   xbee.send(txRequest);
 }
+
 
