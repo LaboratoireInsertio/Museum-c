@@ -115,16 +115,8 @@ void loop() {
     }
   }
 
-  /*previousData = data;
 
-     if ((millis() - timer) > wait && previousData == data) {
-        data = 0;
-
-       timer = millis();
-      }*/
-
-
-//  Serial.println(data);
+  //  Serial.println(data);
 
   // Actuator Servo
   if (actuator == SERVO ) {
@@ -198,15 +190,16 @@ void loop() {
 #endif
   }
 
-Serial.println(data);
+  Serial.println(data);
 
-previousData = data;
+  previousData = data;
 
-     if ((millis() - timer) > wait && previousData == data) {
-        data = 0;
+  if ((millis() - timer) > wait && previousData == data) {
+    data = 0;
 
-       timer = millis();
-     }
+    timer = millis();
+  }
+
   /* if ((millis() - timer) > wait) {
     if (previousData == data) {
       data = 0;
