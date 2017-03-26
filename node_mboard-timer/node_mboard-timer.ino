@@ -2,39 +2,26 @@
 
 // XBee-Arduino by Andrew Rapp (2009)
 // https://github.com/andrewrapp/xbee-arduino
-
 #include <XBee.h>
-#include <Button.h>
 #include <Servo.h>
-
-
+#include <Button.h>
 
 #define DC       0
 #define SERVO    1
 #define SOLENOID 2
 
 
+/*
+  This example is for Series 2 XBee
+  Receives a ZB RX packet and sets a PWM value based on packet data.
+  Error led is flashed if an unexpected packet is received
+*/
+
 XBee xbee = XBee();
 XBeeResponse response = XBeeResponse();
 // create reusable response objects for responses we expect to handle
 ZBRxResponse rx = ZBRxResponse();
 ModemStatusResponse msr = ModemStatusResponse();
-
-const int buttonPin = A0;   // the number of the pushbutton pin
-const int ledPin =  5;      // the number of the LED pin
-
-int sensorPin = A5; // the number of the sensor pin
-
-//Zigbee Transmit Request API packet
-ZBTxRequest txRequest;
-uint8_t payload[] = {
-  0
-};
-
-
-int lastSend = 0;
-
-int dataIn = 0;
 
 Servo servoA;
 Servo servoB;
@@ -44,26 +31,26 @@ Button switch_solenoide = Button(9, BUTTON_PULLUP_INTERNAL);
 
 int actuator = DC;
 
+int data = 0;
+
+
+unsigned long timer;
+
+int wait = 3500;
+
+int previousData;
 
 void setup() {
-  // put your setup code here, to run once:
-
-  Serial.begin (57600);
+  timer = millis();
+  // start serial (Serial: 0 (RX) and 1 (TX). Used to receive (RX)
+  // and transmit (TX) TTL serial data using the ATmega32U4 hardware
+  // serial capability. Note that on the Leonardo, the Serial class
+  // refers to USB (CDC) communication; for TTL serial on pins 0 and
+  // 1, use the Serial1 class.
+  Serial.begin(57600);
 
   Serial1.begin(57600);
   xbee.begin(Serial1);
-
-  // Prepare the Zigbee Transmit Request API packet
-  // Set the paylod for the data to be sent
-  txRequest.setPayload(payload, sizeof(payload));
-  // Identifies the UART data frame for the host to correlate with a
-  // subsequent ACK (acknowledgment). If set to 0, no response is sent.
-  txRequest.setFrameId(0);
-  // Disable ACK (acknowledgement)
-  txRequest.setOption(1);
-
-  pinMode(buttonPin, INPUT);
-  pinMode(ledPin, OUTPUT);
 
   //Switch D5
 
@@ -105,47 +92,14 @@ void setup() {
     pinMode(11, OUTPUT);
 
   }
-
 }
 
 
-/////////////////////////////
-
-
+// continuously reads packets, looking for ZB Receive or Modem Status
 void loop() {
 
-  // put your main code here, to run repeatedly:
-  
-  int data = analogRead(sensorPin);
-  
-  Serial.println (dataIn);
-  //Serial.print (" ");
-  
-   if (abs(lastSend - data) > 0) {
-    // to send only to the coordinator
-    //sendPacket(XBeeAddress64(0x00000000, 0x00000000), buttonValue);
-    // to broadcast the message
-    //sendPacket(XBeeAddress64(0x00000000, 0x0000ffff), buttonValue);
-    
-    // to send to specific XBee  
-    //C4
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66DCA), data);
-    //D#4
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66DCD), data);
-    //C#4
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66DA0), data);
-    //E4
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66C1B), data);
-    //C#4
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66C35), data);
-   
 
-    lastSend = data;
 
-    //Serial.println(data);
-  }
-
-  
   xbee.readPacket();
 
   if (xbee.getResponse().isAvailable()) {
@@ -157,23 +111,24 @@ void loop() {
       xbee.getResponse().getZBRxResponse(rx);
 
       // get value of the first byte in the data
-      dataIn = rx.getData(0);
-      
-      if (dataIn > 0) {
-        data = dataIn;
-      } else {
-        data = sensorPin;
-      }
+      data = rx.getData(0);
     }
   }
-  
- 
+
+  /*previousData = data;
+
+     if ((millis() - timer) > wait && previousData == data) {
+        data = 0;
+
+       timer = millis();
+      }*/
 
 
+//  Serial.println(data);
 
   // Actuator Servo
   if (actuator == SERVO ) {
-    data = map(data, 0, 410, 0, 180);
+    data = map(data, 0, 255, 0, 180);
 
     servoA.write(data);
     servoB.write(data);
@@ -189,14 +144,14 @@ void loop() {
 
     digitalWrite(10, HIGH);
     digitalWrite(11, HIGH);
-    delay (map(data, 0, 410, 1, 25));
+    delay (map(data, 0, 255, 1, 25));
     digitalWrite(10, LOW);
     digitalWrite(11, LOW);
 
 
 
   } else if (actuator == DC) {
-    data = map(data, 0, 410, 0, 255);
+    data = map(data, 0, 255, 0, 255);
 
 
 #ifdef BIDIRECTIONNAL_DC
@@ -242,14 +197,24 @@ void loop() {
     analogWrite(11, data);
 #endif
   }
-}
 
-void sendPacket(XBeeAddress64 addr64, uint8_t val) {
-  // Set the destination address of the message
-  txRequest.setAddress64(addr64);
-  payload[0] = val;
-  // Send the message
-  xbee.send(txRequest);
-}
+Serial.println(data);
 
+previousData = data;
+
+     if ((millis() - timer) > wait && previousData == data) {
+        data = 0;
+
+       timer = millis();
+     }
+  /* if ((millis() - timer) > wait) {
+    if (previousData == data) {
+      data = 0;
+    }
+  }*/
+
+  //data = 0;
+
+  //Serial.println(data);
+}
 

@@ -1,7 +1,8 @@
 // Tested with Arduino 1.7.10 from Arduino.org
 
 // XBee-Arduino by Andrew Rapp (2009)
-// https://github.com/andrewrapp/xbee-arduino
+//https://github.com/andrewrapp/xbee-arduino
+
 #include <XBee.h>
 #include <Servo.h>
 #include <Button.h>
@@ -30,8 +31,6 @@ Button switch_servo = Button(5, BUTTON_PULLUP_INTERNAL);
 Button switch_solenoide = Button(9, BUTTON_PULLUP_INTERNAL);
 
 int actuator = DC;
-
-int data = 0;
 
 
 void setup() {
@@ -101,7 +100,7 @@ void loop() {
       xbee.getResponse().getZBRxResponse(rx);
 
       // get value of the first byte in the data
-      data = rx.getData(0);
+      int data = rx.getData(0);
       
       Serial.println(data);
 
@@ -178,6 +177,5 @@ void loop() {
       }
     }
   }
-  data = 0;
 }
 
