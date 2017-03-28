@@ -49,6 +49,10 @@ uint8_t slipEcho[] = {0,0};
 void setup() {
   // starts serial communication with computer
   Serial.begin(57600);
+  
+  slipEcho[0] = 99;
+  slipEcho[1] = 99;
+  slip.write(slipEcho,2);
 
   // starts serial communication with xBee
   Serial1.begin(57600);
@@ -62,6 +66,10 @@ void setup() {
   txRequest.setFrameId(0);
   // Disable ACK (acknowledgement)
   txRequest.setOption(1);
+  
+    slipEcho[0] = 100;
+  slipEcho[1] = 100;
+  slip.write(slipEcho,2);
 }
 
 void loop() {
@@ -71,6 +79,8 @@ void loop() {
 
   // update() MUST BE CALLED EVERY LOOP
   slip.update();
+  
+
 }
 
 // THIS FUNCTION IS CALLED WHEN A SLIP MESSAGE IS RECEIVED
@@ -78,7 +88,7 @@ void onReceive() {
 
   // GET THE LENGTH IN BYTES OF THE RECEIVED DATA
   int length = slip.length();
-
+ 
   // HERE WE CAN CHECK IF WE RECEIVED THE EXPECTED NUMBER OF BYTES
   if ( length == 2 ) {
     // WE CAN GET INDIVIUAL BYTES WITH get()
