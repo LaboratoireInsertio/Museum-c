@@ -22,15 +22,13 @@ ModemStatusResponse msr = ModemStatusResponse();
 
 const int buttonPin = A0;   // the number of the pushbutton pin
 const int ledPin =  5;      // the number of the LED pin
-int sensorPin = A5;
 
 //Zigbee Transmit Request API packet
 ZBTxRequest txRequest;
 uint8_t payload[] = {
   0
-};
+}; 
 
-int data = 0;
 
 int lastSend = 0;
 
@@ -63,7 +61,6 @@ void setup() {
   txRequest.setOption(1);
 
   pinMode(buttonPin, INPUT);
-  pinMode(ledPin, OUTPUT);
 
   //Switch D5
 
@@ -111,12 +108,19 @@ void setup() {
 
 /////////////////////////////
 
-
+// continuously reads packets, looking for ZB Receive or Modem Status
 void loop() {
 
-  // put your main code here, to run repeatedly:
   
-  
+
+ if (digitalRead(buttonPin) == HIGH){
+    // to send only to the coordinator
+   sendPacket(XBeeAddress64(0x0013a200, 0x40e66da0), sent);
+   Serial.println(sent);
+  }
+
+
+
   xbee.readPacket();
 
   if (xbee.getResponse().isAvailable()) {
@@ -130,48 +134,10 @@ void loop() {
       // get value of the first byte in the data
       dataIn = rx.getData(0);
       
-      if (dataIn > 0) {
-        data = dataIn;
-      } else {
-        data = sensorPin;
-      }
+     
 
     }
   }
-  
-  
-  data = analogRead(sensorPin);
-  // turn the ledPin on
-  
-
-  if (abs(lastSend - data) > 0) {
-    // to send only to the coordinator
-    //sendPacket(XBeeAddress64(0x00000000, 0x00000000), buttonValue);
-    // to broadcast the message
-    //sendPacket(XBeeAddress64(0x00000000, 0x0000ffff), buttonValue);
-    // to send to specific XBee
-    
-    //D2
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66dcb), data);
-    //E2
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66c21), data);
-    //C#2
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66c2d), data);
-   
-
-    lastSend = data;
-
-    Serial.println(data);
-  }
-
-  /*Serial.print(millis() - start);        // check on performance in milliseconds
-  Serial.print("\t");                    // tab character for debug windown spacing
-
-  Serial.print(data);                  // print sensor output 1
-  Serial.println("\t");
-  Serial.print(total2);                  // print sensor output 2
-  Serial.print("\t");
-  Serial.println(total3);    */            // print sensor output 3
 
 
 
