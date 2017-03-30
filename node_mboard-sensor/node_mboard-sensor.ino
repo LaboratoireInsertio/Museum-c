@@ -3,11 +3,9 @@
 // XBee-Arduino by Andrew Rapp (2009)
 // https://github.com/andrewrapp/xbee-arduino
 #include <XBee.h>
-#include <Servo.h>
 #include <Button.h>
 
 #define DC       0
-#define SERVO    1
 #define SOLENOID 2
 
 
@@ -26,17 +24,15 @@ ModemStatusResponse msr = ModemStatusResponse();
 const int buttonPin = 14;   // the number of the pushbutton pin
 
 
-Servo servoA;
-Servo servoB;
 
-Button switch_servo = Button(5, BUTTON_PULLUP_INTERNAL);
 Button switch_solenoide = Button(9, BUTTON_PULLUP_INTERNAL);
 
 int actuator = DC;
 
 int data = 0;
 
-int sent = 0;
+int sensor = 0;
+int previousSensorValue = 0;
 
 //Zigbee Transmit Request API packet
 ZBTxRequest txRequest;
@@ -67,17 +63,8 @@ void setup() {
 
   pinMode(buttonPin, INPUT);
 
-
-  //Switch D5
-
-  if (switch_servo.isPressed()) {
-    actuator = SERVO;
-
-    servoA.attach(A5);
-    servoB.attach(A4);
-
     //Switch D9
-  } else if (switch_solenoide.isPressed()) {
+   if (switch_solenoide.isPressed()) {
     actuator = SOLENOID;
 
     //Motor 1 direction - OUT1 & OUT2
@@ -114,25 +101,38 @@ void setup() {
 // continuously reads packets, looking for ZB Receive or Modem Status
 void loop() {
 
-  if (digitalRead(buttonPin) == LOW) {
-    sent = 1;
+  
+  
+  if (digitalRead(buttonPin) == LOW && previousSensorValue == HIGH ) {
+
+    previousSensorValue = LOW;
     // to send only to the coordinator
-   // sendPacket(XBeeAddress64(0x00000000, 0x00000000), sent);
-    // to send to specific XBee
-    /*ROUTERADDRESS
-   sendPacket(XBeeAddress64(0x0013a200, 0x40e668d2), sent);*/
-       //NODEADDRESS
-   sendPacket(XBeeAddress64(0x0013a200, 0x40e66c14), sent);
-   
+   // sendPacket(XBeeAddress64(0x00000000, 0x00000000), 1);
+     // to send to specific XBee
+    sendPacket(XBeeAddress64(0x0013a200, 0x40e66dc3), 1);
+     /*ROUTERADDRESS
+   sendPacket(XBeeAddress64(0x0013a200, 0x40e668d2), 1);*/
+
     digitalWrite(13, HIGH);
-     Serial.println(sent);
 
-  } else if (digitalRead(buttonPin) == HIGH) {
-    sent = 0;
+    Serial.println(1);
+
+  } else if (digitalRead(buttonPin) == HIGH && previousSensorValue == LOW ) {
+
+    previousSensorValue = HIGH;
+    
+    // to send only to the coordinator
+   // sendPacket(XBeeAddress64(0x00000000, 0x00000000), 1);
+     // to send to specific XBee
+    sendPacket(XBeeAddress64(0x0013a200, 0x40e66dc3), 1);
+     /*ROUTERADDRESS
+   sendPacket(XBeeAddress64(0x0013a200, 0x40e668d2), 1);*/
+
     digitalWrite(13, LOW);
-      Serial.println(sent);
-  }
 
+    Serial.println(0);
+
+  }
 
 
   xbee.readPacket();
@@ -148,17 +148,11 @@ void loop() {
       // get value of the first byte in the data
       data = rx.getData(0);
 
-      Serial.println(data);
+      //Serial.println(data);
 
-      // Actuator Servo
-      if (actuator == SERVO ) {
-        data = map(data, 0, 255, 0, 180);
-
-        servoA.write(data);
-        servoB.write(data);
 
         // Actuator Solenoide - Switch D9
-      } else if (actuator == SOLENOID) {
+      if (actuator == SOLENOID) {
 
         digitalWrite(7, HIGH);
         digitalWrite(8, LOW);

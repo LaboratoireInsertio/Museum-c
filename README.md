@@ -1,2 +1,0 @@
-# ConcreteCity
-Tests and development

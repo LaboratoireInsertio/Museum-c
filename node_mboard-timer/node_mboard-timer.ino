@@ -3,11 +3,8 @@
 // XBee-Arduino by Andrew Rapp (2009)
 // https://github.com/andrewrapp/xbee-arduino
 #include <XBee.h>
-#include <Servo.h>
 #include <Button.h>
-
 #define DC       0
-#define SERVO    1
 #define SOLENOID 2
 
 
@@ -23,10 +20,6 @@ XBeeResponse response = XBeeResponse();
 ZBRxResponse rx = ZBRxResponse();
 ModemStatusResponse msr = ModemStatusResponse();
 
-Servo servoA;
-Servo servoB;
-
-Button switch_servo = Button(5, BUTTON_PULLUP_INTERNAL);
 Button switch_solenoide = Button(9, BUTTON_PULLUP_INTERNAL);
 
 int actuator = DC;
@@ -41,6 +34,7 @@ int wait = 3500;
 int previousData;
 
 void setup() {
+
   timer = millis();
   // start serial (Serial: 0 (RX) and 1 (TX). Used to receive (RX)
   // and transmit (TX) TTL serial data using the ATmega32U4 hardware
@@ -50,18 +44,10 @@ void setup() {
   Serial.begin(57600);
 
   Serial1.begin(57600);
+
   xbee.begin(Serial1);
 
-  //Switch D5
-
-  if (switch_servo.isPressed()) {
-    actuator = SERVO;
-
-    servoA.attach(A5);
-    servoB.attach(A4);
-
-    //Switch D9
-  } else if (switch_solenoide.isPressed()) {
+  if (switch_solenoide.isPressed()) {
     actuator = SOLENOID;
 
     //Motor 1 direction - OUT1 & OUT2
@@ -113,20 +99,13 @@ void loop() {
       // get value of the first byte in the data
       data = rx.getData(0);
     }
+      Serial.println(data);
   }
 
 
-  //  Serial.println(data);
 
-  // Actuator Servo
-  if (actuator == SERVO ) {
-    data = map(data, 0, 255, 0, 180);
-
-    servoA.write(data);
-    servoB.write(data);
-
-    // Actuator Solenoide - Switch D9
-  } else if (actuator == SOLENOID) {
+  // Actuator Solenoide - Switch D9
+  if (actuator == SOLENOID) {
 
     digitalWrite(7, HIGH);
     digitalWrite(8, LOW);
@@ -136,7 +115,7 @@ void loop() {
 
     digitalWrite(10, HIGH);
     digitalWrite(11, HIGH);
-    delay (map(data, 0, 255, 1, 25));
+    delay (map(data, 0, 255, 0, 25));
     digitalWrite(10, LOW);
     digitalWrite(11, LOW);
 
@@ -190,21 +169,14 @@ void loop() {
 #endif
   }
 
-  Serial.println(data);
+  //Serial.println(data);
 
   previousData = data;
 
   if ((millis() - timer) > wait && previousData == data) {
     data = 0;
-
     timer = millis();
   }
-
-  /* if ((millis() - timer) > wait) {
-    if (previousData == data) {
-      data = 0;
-    }
-  }*/
 
   //data = 0;
 
