@@ -29,9 +29,16 @@ int actuator = DC;
 
 int data = 0;
 
+float raw = 0;
+float filtered = 0;
+
 int sensor = 0;
 
 int previousSensorValue = 0;
+
+int interval = 500;
+
+unsigned long previousTime;
 
 //Zigbee Transmit Request API packet
 ZBTxRequest txRequest;
@@ -61,11 +68,11 @@ void setup() {
   txRequest.setOption(1);
 
   pinMode(sensorPin, INPUT);
-  
-  //previousSensorValue = sensor;
 
-    //Switch D9
-   if (switch_solenoide.isPressed()) {
+  previousTime = millis();
+
+  //Switch D9
+  if (switch_solenoide.isPressed()) {
     actuator = SOLENOID;
 
     //Motor 1 direction - OUT1 & OUT2
@@ -102,32 +109,6 @@ void setup() {
 // continuously reads packets, looking for ZB Receive or Modem Status
 void loop() {
 
-   sensor = analogRead(sensorPin);
-  
-  if (sensor != previousSensorValue  ) {
-
-    previousSensorValue = sensor;
-    // to send only to the coordinator
-   // sendPacket(XBeeAddress64(0x00000000, 0x00000000), 1);
-     // to send to specific XBee
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66dc3), sensor);
-     /*ROUTERADDRESS
-   sendPacket(XBeeAddress64(0x0013a200, 0x40e668d2), 1);*/
-
-    digitalWrite(13, HIGH);
-
-    Serial.println(sensor);
-
-  } else if ( sensor == previousSensorValue) {
-
-
-    digitalWrite(13, LOW);
-
-    //Serial.println(sensor);
-
-  }
-
-
   xbee.readPacket();
 
   if (xbee.getResponse().isAvailable()) {
@@ -144,7 +125,7 @@ void loop() {
       //Serial.println(data);
 
 
-        // Actuator Solenoide - Switch D9
+      // Actuator Solenoide - Switch D9
       if (actuator == SOLENOID) {
 
         digitalWrite(7, HIGH);
@@ -211,6 +192,47 @@ void loop() {
     }
   }
   data = 0;
+
+
+  //sensor = analogRead(sensorPin);
+
+  raw = analogRead(sensorPin);
+
+  filtered = filtered * 0.9 + raw * 0.1;
+
+  sensor = filtered;
+
+
+  if ((millis() - previousTime) > interval)
+  {
+    if (sensor <= (previousSensorValue - 10) || sensor >= (previousSensorValue + 10)  ) {
+
+      previousSensorValue = sensor;
+
+      // to send only to the coordinator
+      // sendPacket(XBeeAddress64(0x00000000, 0x00000000), 1);
+      // to send to a specific XBee
+      sendPacket(XBeeAddress64(0x0013a200, 0x40e66dc3), sensor);
+      /*ROUTERADDRESS
+      sendPacket(XBeeAddress64(0x0013a200, 0x40e668d2), 1);*/
+
+      digitalWrite(13, HIGH);
+
+      Serial.println(sensor);
+
+    } else if ( sensor == previousSensorValue) {
+
+      sensor = 0;
+      // to send to a specific XBee
+      sendPacket(XBeeAddress64(0x0013a200, 0x40e66dc3), 0);
+
+      digitalWrite(13, LOW);
+
+      //Serial.println(sensor);
+
+    }
+    previousTime = millis();
+  }
 }
 
 void sendPacket(XBeeAddress64 addr64, uint8_t val) {
