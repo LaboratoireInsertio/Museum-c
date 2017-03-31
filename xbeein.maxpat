@@ -9,7 +9,7 @@
 			"modernui" : 1
 		}
 ,
-		"rect" : [ 202.0, 145.0, 640.0, 480.0 ],
+		"rect" : [ 325.0, 108.0, 813.0, 483.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -61,7 +61,7 @@
 							"modernui" : 1
 						}
 ,
-						"rect" : [ 318.0, 265.0, 301.0, 108.0 ],
+						"rect" : [ 441.0, 226.0, 538.0, 110.0 ],
 						"bgcolor" : [ 1.0, 1.0, 1.0, 0.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 1,
@@ -675,7 +675,7 @@
 								"box" : 								{
 									"allowdrag" : 0,
 									"id" : "obj-19",
-									"items" : [ "(serial", "port)", ",", "Bluetooth-Incoming-Port", ",", "usbmodem1411", ",", "usbmodem14241" ],
+									"items" : [ "(serial", "port)", ",", "usbmodem1411", ",", "Bluetooth-Incoming-Port", ",", "usbmodem14211", ",", "usbmodem14241" ],
 									"maxclass" : "umenu",
 									"numinlets" : 1,
 									"numoutlets" : 3,
@@ -1317,7 +1317,7 @@
  ]
 					}
 ,
-					"patching_rect" : [ 116.0, 120.0, 301.0, 108.0 ],
+					"patching_rect" : [ 116.0, 118.0, 538.0, 110.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 24.0, 111.0, 518.0, 71.0 ],
 					"varname" : "patcher",

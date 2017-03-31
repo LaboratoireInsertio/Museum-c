@@ -21,9 +21,7 @@ XBeeResponse response = XBeeResponse();
 ZBRxResponse rx = ZBRxResponse();
 ModemStatusResponse msr = ModemStatusResponse();
 
-const int buttonPin = 14;   // the number of the pushbutton pin
-
-
+const int sensorPin = A5;   // the number of the sensor pin
 
 Button switch_solenoide = Button(9, BUTTON_PULLUP_INTERNAL);
 
@@ -32,6 +30,7 @@ int actuator = DC;
 int data = 0;
 
 int sensor = 0;
+
 int previousSensorValue = 0;
 
 //Zigbee Transmit Request API packet
@@ -61,7 +60,9 @@ void setup() {
   // Disable ACK (acknowledgement)
   txRequest.setOption(1);
 
-  pinMode(buttonPin, INPUT);
+  pinMode(sensorPin, INPUT);
+  
+  //previousSensorValue = sensor;
 
     //Switch D9
    if (switch_solenoide.isPressed()) {
@@ -101,36 +102,28 @@ void setup() {
 // continuously reads packets, looking for ZB Receive or Modem Status
 void loop() {
 
+   sensor = analogRead(sensorPin);
   
-  
-  if (digitalRead(buttonPin) == LOW && previousSensorValue == HIGH ) {
+  if (sensor != previousSensorValue  ) {
 
-    previousSensorValue = LOW;
+    previousSensorValue = sensor;
     // to send only to the coordinator
    // sendPacket(XBeeAddress64(0x00000000, 0x00000000), 1);
      // to send to specific XBee
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66dc3), 1);
+    sendPacket(XBeeAddress64(0x0013a200, 0x40e66dc3), sensor);
      /*ROUTERADDRESS
    sendPacket(XBeeAddress64(0x0013a200, 0x40e668d2), 1);*/
 
     digitalWrite(13, HIGH);
 
-    //Serial.println(1);
+    Serial.println(sensor);
 
-  } else if (digitalRead(buttonPin) == HIGH && previousSensorValue == LOW ) {
+  } else if ( sensor == previousSensorValue) {
 
-    previousSensorValue = HIGH;
-    
-    // to send only to the coordinator
-   // sendPacket(XBeeAddress64(0x00000000, 0x00000000), 0);
-     // to send to specific XBee
-    sendPacket(XBeeAddress64(0x0013a200, 0x40e66dc3), 0);
-     /*ROUTERADDRESS
-   sendPacket(XBeeAddress64(0x0013a200, 0x40e668d2), 0);*/
 
     digitalWrite(13, LOW);
 
-    //Serial.println(0);
+    //Serial.println(sensor);
 
   }
 
