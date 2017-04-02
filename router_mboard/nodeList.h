@@ -11,8 +11,8 @@ Node nodes[] = {
   Node(XBeeAddress64(0x0013a200, 0x40e66c42), 51),  // 51 - D#2
   Node(XBeeAddress64(0x0013a200, 0x40e66c21), 52),  // 52 - E2   
  
-  Node(XBeeAddress64(0x0013a200, 0x40e66c1d), 60),  // 60 - C3
-  Node(XBeeAddress64(0x0013a200, 0x40e66c3c), 61),  // 61 - C#3
+  Node(XBeeAddress64(0x0013a200, 0x40e66c59), 60),  // 60 - C3
+  Node(XBeeAddress64(0x0013a200, 0x40e66d8d), 61),  // 61 - C#3
   Node(XBeeAddress64(0x0013a200, 0x40e668d4), 62),  // 62 - D3
   Node(XBeeAddress64(0x0013a200, 0x40e66c5b), 63),  // 63 - D#3
   Node(XBeeAddress64(0x0013a200, 0x40e66c46), 64),  // 64 - E3
