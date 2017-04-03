@@ -77,9 +77,9 @@ function onIncomingMessage(protocol, host, port, destination, values) {
  */
 function madeThroughGUI() {
 //GUI: NEVER EVER REMOVE THIS LINE
-	run("zoom 148");
-	run("rotate 0 -7.10298 7.79903");
-	run("center 2.85507 -1.01834");
+	run("zoom 172");
+	run("rotate -10.2591 -23.4816 -17.2481");
+	run("center 5.53567 -1.82318");
 	run("speed 1");
 
 
@@ -123,6 +123,15 @@ function madeThroughGUI() {
 	run("settime current 0");
 	run("settimepercent current 0");
 	run("setmessage current 20, - ,");
+
+
+	run("add curve 75");
+	run("setpos current 11.0574 -2.74997 0");
+	run("setpointsellipse current 2 2");
+	run("add cursor 76");
+	run("setcurve current lastCurve");
+	run("setpos current 13.0574 -2.74997 0");
+	run("setpattern current 0 0 1");
 
 
 	run("add curve 9");
@@ -219,6 +228,10 @@ function madeThroughGUI() {
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label ,");
 	run("settriggeroff current 0.01");
 
+	run("add trigger 74");
+	run("setpos current 12.189 -1.48173 0");
+	run("setmessage current 1, direct:// rotate {random(-20, 20)} {random(0, -80)} {random(-40, 40)} ,");
+
 	run("add trigger 60");
 	run("setpos current 1.27211 1.22934 0");
 	run("setlabel current C2");
@@ -245,6 +258,8 @@ function madeThroughGUI() {
  */
 function madeThroughInterfaces() {
 //INTERFACES: NEVER EVER REMOVE THIS LINE
+	run("rotate -10.2591 -23.4816 -17.2481");
+
 
 //INTERFACES: NEVER EVER REMOVE THIS LINE
 }
