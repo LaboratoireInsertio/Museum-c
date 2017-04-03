@@ -77,14 +77,56 @@ function onIncomingMessage(protocol, host, port, destination, values) {
  */
 function madeThroughGUI() {
 //GUI: NEVER EVER REMOVE THIS LINE
-	run("center 0.686755 -0.276898");
-	run("zoom 132");
+	run("zoom 68");
+	run("rotate 0 0 0");
+	run("center -0.670717 0.0601408");
+	run("speed 10");
+
+
+	run("add curve 5");
+	run("setpos current -0.72671 0.941026 0");
+	run("setpointsellipse current 0.5 0.5");
+	run("setresize current 1 1");
+	run("add cursor 6");
+	run("setcurve current lastCurve");
+	run("setpos current -1.21142 1.06371 0");
+	run("setpattern current 0 0 1");
+	run("setmessage current 20, - ,");
+	run("settime current 362.729999999993");
+
+
+	run("add curve 7");
+	run("setpos current 0.151679 -0.0987708 0");
+	run("setpointsellipse current 0.5 0.5");
+	run("setresize current 1 1");
+	run("add cursor 8");
+	run("setcurve current lastCurve");
+	run("setpos current -0.333036 0.023915 0");
+	run("setpattern current 0 0 1");
+	run("settime current 362.729999999993");
+	run("settimepercent current 0.46054501544427");
+	run("setmessage current 20, - ,");
+
+
+	run("add curve 9");
+	run("setpos current 0.890745 1.53376 0");
+	run("setpointsellipse current 1 1");
+	run("setresize current 2 2");
+	run("add cursor 10");
+	run("setcurve current lastCurve");
+	run("setpos current 1.43839 0.697053 0");
+	run("setpattern current 0 0 1");
+	run("settime current 495.380389191381");
+	run("setmessage current 20, - ,");
+	run("setspeedf current 1.7");
+	run("settimepercent current 0.842237650595251");
 
 
 	run("add trigger 1");
-	run("setpos current 1.90045 3.11929 0");
-	run("setlabel current C#");
+	run("setpos current -0.16445 0.627173 0");
+	run("setlabel current C2");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance ,");
+	run("settriggeroff current 0.05");
 
 
 
@@ -118,7 +160,7 @@ function alterateWithScript() {
 
 /*
  *	//APP VERSION: NEVER EVER REMOVE THIS LINE
- *	Made with IanniX 0.9.17
+ *	Made with IanniX 0.9.16
  *	//APP VERSION: NEVER EVER REMOVE THIS LINE
  */
 
