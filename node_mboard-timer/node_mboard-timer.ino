@@ -29,7 +29,7 @@ int data = 0;
 
 unsigned long timer;
 
-int wait = 3500;
+int wait = 500;
 
 int previousData;
 
@@ -98,8 +98,9 @@ void loop() {
 
       // get value of the first byte in the data
       data = rx.getData(0);
+      timer = millis();
     }
-      Serial.println(data);
+    Serial.println(data);
   }
 
 
@@ -107,7 +108,9 @@ void loop() {
   // Actuator Solenoide - Switch D9
   if (actuator == SOLENOID) {
 
+
     digitalWrite(7, HIGH);
+    delay (map(data, 0, 255, 1, 25));
     digitalWrite(8, LOW);
 
     digitalWrite(12, HIGH);
@@ -115,7 +118,7 @@ void loop() {
 
     digitalWrite(10, HIGH);
     digitalWrite(11, HIGH);
-    delay (map(data, 0, 255, 0, 25));
+    delay (map(data, 0, 255, 1, 25));
     digitalWrite(10, LOW);
     digitalWrite(11, LOW);
 
@@ -171,15 +174,15 @@ void loop() {
 
   //Serial.println(data);
 
-  previousData = data;
+  //previousData = data;
 
-  if ((millis() - timer) > wait && previousData == data) {
+  if ((millis() - timer) >= wait) {
     data = 0;
-    timer = millis();
+    
   }
 
   //data = 0;
 
-  //Serial.println(data);
+  Serial.println(data);
 }
 

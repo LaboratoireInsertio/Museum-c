@@ -43,7 +43,7 @@ unsigned long previousTime;
 //Zigbee Transmit Request API packet
 ZBTxRequest txRequest;
 uint8_t payload[] = {
-  0
+  0,0
 };
 
 
@@ -217,6 +217,8 @@ void loop() {
       sendPacket(XBeeAddress64(0x0013a200, 0x40e668d2), 1);*/
 
       digitalWrite(13, HIGH);
+      
+      sensor = sensor / 4;
 
       Serial.println(sensor);
 
