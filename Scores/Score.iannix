@@ -247,10 +247,10 @@ function onIncomingMessage(protocol, host, port, destination, values) {
  */
 function madeThroughGUI() {
 //GUI: NEVER EVER REMOVE THIS LINE
-	run("zoom 294.922");
-	run("rotate 0 -22.1614 -4.08377");
+	run("zoom 172.02420836604");
+	run("rotate 0 0 0");
 	run("speed 1");
-	run("center 1.56712 2.84294");
+	run("center 0.704226 2.9438");
 
 	run("registertexture background -7.8  8.75 8.7 -7.75 plan du grand hall.png");
 	run("registercolor background_texture_tint  255 255 255 50");
@@ -258,12 +258,12 @@ function madeThroughGUI() {
 
 	run("add curve 107");
 	run("setpos current 4.6679 -5.71217 0");
-	run("setpointsellipse current 1.13347e-129 1.13347e-129");
-	run("setresize current 2.26694e-129 2.26694e-129");
+	run("setpointsellipse current 0 0");
+	run("setresize current 0 0");
 	run("setposz current 0");
 
 
-	run("setmute lines 0");
+	run("setmute lines 1");
 
 
 	run("add trigger 74");
@@ -276,31 +276,34 @@ function madeThroughGUI() {
 
 
 	run("add trigger 77");
-	run("setpos current 3.75982 1.98135 0.25");
+	run("setpos current 0.0917046 3.10424 0.25");
 	run("setlabel current C3");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
 	run("setposz current 0.25");
 	run("setgroup current xbees");
+	run("trig current false");
 
 	run("add trigger 79");
-	run("setpos current -4.42177 0.240456 0.25");
+	run("setpos current 0.0323696 1.21363 0.25");
 	run("setlabel current D#4");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
 	run("setposz current 0.25");
 	run("setgroup current xbees");
+	run("trig current false");
 
 	run("add trigger 80");
-	run("setpos current -2.02092 -2.23447 0.25");
+	run("setpos current 0.0751457 2.53782 0.25");
 	run("setlabel current D4");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
 	run("setposz current 0.25");
 	run("setgroup current xbees");
+	run("trig current false");
 
 	run("add trigger 81");
-	run("setpos current -1.97134 -2.84198 0.25");
+	run("setpos current 5.57076 0.919706 0.25");
 	run("setlabel current D#6");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
@@ -308,7 +311,7 @@ function madeThroughGUI() {
 	run("setgroup current xbees");
 
 	run("add trigger 85");
-	run("setpos current -0.69874 3.36932 0.25");
+	run("setpos current -6.40678 4.49221 0.25");
 	run("setlabel current E2");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
@@ -316,7 +319,7 @@ function madeThroughGUI() {
 	run("setgroup current xbees");
 
 	run("add trigger 86");
-	run("setpos current -0.760372 1.6254 0.25");
+	run("setpos current 4.2365 4.15191 0.25");
 	run("setlabel current E4");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
@@ -324,15 +327,16 @@ function madeThroughGUI() {
 	run("setgroup current xbees");
 
 	run("add trigger 87");
-	run("setpos current -0.730647 2.23232 0.25");
+	run("setpos current -6.41996 2.12003 0.25");
 	run("setlabel current E5");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
 	run("setposz current 0.25");
 	run("setgroup current xbees");
+	run("trig current false");
 
 	run("add trigger 88");
-	run("setpos current -0.766044 2.85416 0.25");
+	run("setpos current 4.26826 3.2846 0.25");
 	run("setlabel current E3");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
@@ -340,7 +344,7 @@ function madeThroughGUI() {
 	run("setgroup current xbees");
 
 	run("add trigger 90");
-	run("setpos current 3.73756 2.78675 0.25");
+	run("setpos current -6.08775 6.34258 0.25");
 	run("setlabel current C2");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
@@ -348,20 +352,22 @@ function madeThroughGUI() {
 	run("setgroup current xbees");
 
 	run("add trigger 91");
-	run("setpos current -6.62576 -1.82075 0.25");
+	run("setpos current -2.05933 2.80182 0.25");
 	run("setlabel current C6");
-	run("settriggeroff current 0.1");
+	run("settriggeroff current 0.5");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
 	run("setposz current 0.25");
 	run("setgroup current xbees");
+	run("trig current false");
 
 	run("add trigger 92");
-	run("setpos current -6.84137 0.836312 0.25");
+	run("setpos current -2.08779 1.47262 0.25");
 	run("setlabel current C4");
-	run("settriggeroff current 0.1");
+	run("settriggeroff current 0.5");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
 	run("setposz current 0.25");
 	run("setgroup current xbees");
+	run("trig current false");
 
 	run("add trigger 93");
 	run("setpos current -6.72364 -0.505527 0.25");
@@ -380,31 +386,34 @@ function madeThroughGUI() {
 	run("setgroup current xbees");
 
 	run("add trigger 95");
-	run("setpos current 3.83534 4.70214 0.25");
+	run("setpos current 0.0549355 1.89491 0.25");
 	run("setlabel current D#2");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
 	run("setposz current 0.25");
 	run("setgroup current xbees");
+	run("trig current false");
 
 	run("add trigger 96");
-	run("setpos current 5.32439 3.5541 0.25");
+	run("setpos current -2.04927 3.9284 0.25");
 	run("setlabel current D3");
-	run("settriggeroff current 0.1");
+	run("settriggeroff current 0.5");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
 	run("setposz current 0.25");
 	run("setgroup current xbees");
+	run("trig current false");
 
 	run("add trigger 97");
-	run("setpos current -0.794377 -0.941405 0.25");
+	run("setpos current 4.22121 1.22952 0.25");
 	run("setlabel current D5");
-	run("settriggeroff current 0.1");
+	run("settriggeroff current 3");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
 	run("setposz current 0.25");
 	run("setgroup current xbees");
+	run("trig current false");
 
 	run("add trigger 98");
-	run("setpos current 3.74796 3.40355 0.25");
+	run("setpos current -6.71365 5.96749 0.25");
 	run("setlabel current D#3");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
@@ -412,7 +421,7 @@ function madeThroughGUI() {
 	run("setgroup current xbees");
 
 	run("add trigger 99");
-	run("setpos current -0.763741 -1.62592 0.25");
+	run("setpos current -6.13491 5.42959 0.25");
 	run("setlabel current D#5");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
@@ -420,7 +429,7 @@ function madeThroughGUI() {
 	run("setgroup current xbees");
 
 	run("add trigger 101");
-	run("setpos current 3.75684 1.45035 0.25");
+	run("setpos current 0.0887249 3.77099 0.25");
 	run("setlabel current C#3");
 	run("settriggeroff current 0.1");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
@@ -429,7 +438,7 @@ function madeThroughGUI() {
 	run("setgroup current xbees");
 
 	run("add trigger 104");
-	run("setpos current -6.908 0.173119 0.25");
+	run("setpos current 4.20863 2.36276 0.25");
 	run("setlabel current C#4");
 	run("setmessage current 1, osc://ip_out:port_out/trigger trigger_label trigger_distance , midi://midi_out/note 1 69 127 5 ,");
 	run("settriggeroff current 0.1");
@@ -450,7 +459,7 @@ function madeThroughGUI() {
  */
 function madeThroughInterfaces() {
 //INTERFACES: NEVER EVER REMOVE THIS LINE
-	run("rotate 0 -22.1614 -4.08377");
+	run("rotate 0 0 0");
 	run("speed 1");
 
 
@@ -471,7 +480,7 @@ function alterateWithScript() {
 
 /*
  *	//APP VERSION: NEVER EVER REMOVE THIS LINE
- *	Made with IanniX 0.9.16
+ *	Made with IanniX 0.9.17
  *	//APP VERSION: NEVER EVER REMOVE THIS LINE
  */
 
